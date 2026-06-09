@@ -6,9 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import { AnimationCanvas } from "@/components/AnimationCanvas";
 import { EditorControls } from "@/components/EditorControls";
 import { DEFAULT_CONFIG, type AnimationConfig, renderFrame } from "@/lib/animations";
+import { useAuth } from "@/context/AuthContext";
+import { AuthDialog } from "@/components/AuthDialog";
 import {
   Download, Play, Pause, ArrowLeft, Loader2,
-  Video, FileImage, Zap,
+  Video, FileImage, Zap, BookmarkPlus, Check,
 } from "lucide-react";
 import Link from "next/link";
 import type { Template } from "@/lib/templates";
@@ -18,6 +20,7 @@ interface EditorClientProps {
 }
 
 export function EditorClient({ template }: EditorClientProps) {
+  const { user, saveProject } = useAuth();
   const [config, setConfig] = useState<AnimationConfig>({
     ...DEFAULT_CONFIG,
     text: template.title.toUpperCase(),
@@ -25,7 +28,22 @@ export function EditorClient({ template }: EditorClientProps) {
   const [playing, setPlaying] = useState(true);
   const [exporting, setExporting] = useState(false);
   const [exportFormat, setExportFormat] = useState<"webm" | "gif">("webm");
+  const [saved, setSaved] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const handleSave = () => {
+    if (!user) { setAuthOpen(true); return; }
+    saveProject({
+      templateId: template.id,
+      templateTitle: template.title,
+      templateShape: template.shape,
+      templateGradient: template.gradient,
+      name: config.text || template.title,
+    });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2500);
+  };
 
   // ── Export as WebM via MediaRecorder ──────────────────────────────────────
   const exportWebM = useCallback(async () => {
@@ -109,6 +127,15 @@ export function EditorClient({ template }: EditorClientProps) {
           >
             {playing ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
             {playing ? "Pause" : "Play"}
+          </Button>
+
+          <Button
+            variant="outline"
+            size="sm"
+            className={`h-7 gap-1.5 text-xs border-border transition-colors ${saved ? "border-green-500/50 text-green-400" : "text-muted-foreground"}`}
+            onClick={handleSave}
+          >
+            {saved ? <><Check className="w-3 h-3" />Saved!</> : <><BookmarkPlus className="w-3 h-3" />Save</>}
           </Button>
 
           {/* Format toggle */}
@@ -208,6 +235,8 @@ export function EditorClient({ template }: EditorClientProps) {
           </div>
         </div>
       )}
+
+      <AuthDialog open={authOpen} onClose={() => setAuthOpen(false)} defaultTab="signup" />
     </div>
   );
 }
