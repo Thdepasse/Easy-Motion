@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Navbar } from "@/components/Navbar";
+import { Sidebar } from "@/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
@@ -17,8 +17,8 @@ export default function SettingsPage() {
 
   if (!user) {
     return (
-      <div className="flex flex-col h-screen">
-        <Navbar />
+      <div className="flex h-screen overflow-hidden">
+        <Sidebar />
         <div className="flex-1 flex items-center justify-center">
           <Button onClick={() => setAuthOpen(true)} className="bg-primary hover:bg-primary/90 text-primary-foreground">
             Sign in to access settings
@@ -35,8 +35,8 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen">
-      <Navbar />
+    <div className="flex h-screen overflow-hidden">
+      <Sidebar />
       <main className="flex-1 overflow-y-auto">
         <div className="max-w-2xl mx-auto px-6 py-8 space-y-6">
           {/* Back + title */}

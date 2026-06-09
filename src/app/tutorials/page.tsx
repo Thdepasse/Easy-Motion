@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Navbar } from "@/components/Navbar";
+import { Sidebar } from "@/components/Sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { BookOpen, Search, Clock, Play, ChevronRight } from "lucide-react";
@@ -46,8 +46,8 @@ export default function TutorialsPage() {
   });
 
   return (
-    <div className="flex flex-col h-screen">
-      <Navbar />
+    <div className="flex h-screen overflow-hidden">
+      <Sidebar />
       <main className="flex-1 overflow-y-auto">
         <div className="max-w-5xl mx-auto px-6 py-8">
           {/* Header */}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Navbar } from "@/components/Navbar";
+import { Sidebar } from "@/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -18,8 +18,8 @@ export default function AccountPage() {
 
   if (!user) {
     return (
-      <div className="flex flex-col h-screen">
-        <Navbar />
+      <div className="flex h-screen overflow-hidden">
+        <Sidebar />
         <div className="flex-1 flex flex-col items-center justify-center gap-5 text-center px-4">
           <div className="w-14 h-14 rounded-2xl gradient-bg flex items-center justify-center">
             <User className="w-7 h-7 text-purple-300" />
@@ -42,8 +42,8 @@ export default function AccountPage() {
   const joinDate = new Date(user.joinedAt).toLocaleDateString("en-US", { month: "long", year: "numeric" });
 
   return (
-    <div className="flex flex-col h-screen">
-      <Navbar />
+    <div className="flex h-screen overflow-hidden">
+      <Sidebar />
       <main className="flex-1 overflow-y-auto">
         <div className="max-w-3xl mx-auto px-6 py-8 space-y-6">
           {/* Profile card */}
